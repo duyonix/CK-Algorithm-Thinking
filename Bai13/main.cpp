@@ -3,6 +3,7 @@
 #include <algorithm>
 using namespace std;
 #pragma warning(disable:4996)
+const int N = 1000009;
 class point {
     private:
         int id;
@@ -10,15 +11,43 @@ class point {
         long long y;
 
     public:
+        static point O;
         bool operator<(const point& rhs) const {
             return x < rhs.x || (x == rhs.x && y < rhs.y);
         }
         point(int id, long long x, long long y) : id(id), x(x), y(y) {}
+        point(const point& another) : x{ another.x }, y{ another.y }, id{ another.id } {}
         int getId() { return id; }
-        int getX() { return x; }
-        int getY() { return y; }
+        long long getX() { return x; }
+        long long getY() { return y; }
+        static bool compareSlope(point A, point B)
+        {
+            double slope_a, slope_b;
+            if (A.getX() == point::O.getX())
+            {
+                if (A.getY() - point::O.getY() > 0)
+                    slope_a = DBL_MAX;
+                else
+                    slope_a = -DBL_MAX;
+            }
+            else
+                slope_a = (A.getY() - point::O.getY()) * 1.0 / (A.getX() - point::O.getX());
+
+            if (B.getX() == point::O.getX())
+            {
+                if (B.getY() - point::O.getY() > 0)
+                    slope_b = DBL_MAX;
+                else
+                    slope_b = -DBL_MAX;
+            }
+            else
+                slope_b = (B.getY() - point::O.getY()) * 1.0 / (B.getX() - point::O.getX());
+
+            return slope_a > slope_b;
+
+        }
 };
-const int N = 1000009;
+
 
 long long location(point a, point b, point c) {
     return (b.getX() - a.getX()) * (b.getY() + a.getY()) + (c.getX() - b.getX()) * (c.getY() + b.getY()) + (a.getX() - c.getX()) * (a.getY() + c.getY());
@@ -74,6 +103,41 @@ pair<int, int> better(vector<point> a,int n) {
     }
     return make_pair(-1, -1);
 }
+point point::O = point(0, 0, -1);
+//O(n)
+pair<int, int> best(vector<point> a, int n) {
+    int x, y, pos_O;
+    int min_x = INT_MAX;
+    for (int i = 1; i <= n; ++i)
+    {
+        cin >> x >> y;
+        a.push_back(point(x, y, i));
+
+        // tim O co hoanh do x nho nhat
+        if (x < min_x)
+        {
+            min_x = x;
+            pos_O = i - 1;
+        }
+    }
+
+    // loai diem tree_O ra khoi mang, va tree_O tro thanh goc
+    point tree_O = a[pos_O];
+    if (pos_O != n - 1)
+    {
+        a[pos_O] = a[n - 1];
+    }
+    a.pop_back();
+    point::O = tree_O;
+
+    // sap xep mang theo do doc cua tree_O
+    sort(a.begin(), a.end(), point::compareSlope);
+
+    // diem trung vi tree_O2
+    point tree_O2 = a[a.size() / 2];
+    return make_pair(pos_O, tree_O2.getId());
+}
+
 int main() {
     freopen("input.txt", "r", stdin);
     freopen("output.txt", "w", stdout);
@@ -91,7 +155,8 @@ int main() {
 
         //pair<int, int> ans = naive();
         pair<int, int> ans = better(a,n);
-        cout << ans.first + 1 << " " << ans.second + 1 << "\n";
+        //pair<int, int> ans = best(a, n);
+        cout << ans.first+1 << " " << ans.second +1 << "\n";
     }
     return 0;
 }
