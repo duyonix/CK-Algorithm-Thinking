@@ -2,6 +2,7 @@
 #include <vector>
 #include <algorithm>
 #include <queue>
+#include <fstream>
 
 #define MAX (1e6 + 2)
 #define pii pair<int, int>
@@ -30,17 +31,31 @@ struct compare_pii
 
 int main()
 {
+    // space complexity: O(n)
+    // time complexity: O(nlog(n))
+
+    ifstream file;
+    file.open("input.txt");
+
+    if (!file.is_open())
+    {
+        cout << "File not found!" << endl;
+        return 0;
+    }
+
     int n, max_layer = 0;
-    cin >> n;
+    file >> n;
     vector<Segment> segments(n);
 
     for (int i = 0; i < n; ++i)
     {
         segments[i].id = i;
-        cin >> segments[i].a >> segments[i].b;
+        file >> segments[i].a >> segments[i].b;
         ++color_layer[segments[i].a];
         --color_layer[segments[i].b + 1];
     }
+
+    file.close();
 
     for (int i = 1; i < MAX; ++i)
     {
