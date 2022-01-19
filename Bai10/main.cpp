@@ -54,6 +54,7 @@ int main()
     sort(segments.begin(), segments.end(), compare);
     vector<int> color_code(n);
     priority_queue<pii, vector<pii>, compare_pii> pq;
+
     for (int i = 0; i < max_layer; ++i)
         pq.push(pii(0, i + 1));
 
