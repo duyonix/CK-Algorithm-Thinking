@@ -4,7 +4,7 @@
 
 #define MAX 1e3
 #define ll long long
-#define pii pair<int, int>
+#define pii pair<int,int>
 
 using namespace std;
 // O(log(max(a,b))) 
@@ -44,29 +44,16 @@ void solution1(){
     for (ll i = 0; i < n; i++) {
         cin >> a[i];
     }
+    // code 
     ll gcd_max = a[0];
-    vector<vector<ll>> prefixGCD(n);
-    for (ll i=n-1; i>=0; --i){
-        prefixGCD[i] = vector<ll>(n);
-        for (ll j=i; j<min(n, i+k); ++j){
-            if(i==j){
-                prefixGCD[i][j]=a[i];
-            }else{
-                prefixGCD[i][j]=gcd(prefixGCD[i+1][j],prefixGCD[i][j-1]);
-            }
-        }
-    }
-    for (ll i = 0; i < n-k; i++) {
-        if (prefixGCD[i][i+k-1] > gcd_max){
-            gcd_max = prefixGCD[i][i+k-1];
-        }
-    }
     cout << gcd_max <<endl;
 }
 
 int main(){
+    freopen("input.inp", "r", stdin);
+    freopen("output.out", "w", stdout);
     ios_base::sync_with_stdio(false);
     cin.tie(NULL);
-    solution1();
+    solution();
     return 0;
 }
