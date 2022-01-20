@@ -39,11 +39,11 @@ Node *LCA(Node *root, int n1, int n2)
     if (left == NULL && right == NULL)
         return NULL;
 
-    // nếu cả 2 node n1, n2 đều nằm ở cây con trái thì ta tìm tiếp LCA của chúng trong cây con trái
+    // nếu cả 2 node n1, n2 đều nằm ở cây con trái thì LCA của chúng là LCA trong cây con trái
     if (left != NULL)
-        return LCA(root->left, n1, n2);
+        return left;
     // ngược lại
-    return LCA(root->right, n1, n2);
+    return right;
 }
 
 /* Hàm tìm level của 1 node
