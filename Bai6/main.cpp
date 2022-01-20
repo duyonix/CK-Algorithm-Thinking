@@ -1,107 +1,55 @@
-//Cho n đoạn giá trị (x_i,y_i ) phủ tất cả giá trị từ L đến R.
-// Hãy loại bỏ 1 đoạn trong số n đoạn sao cho n-1 đoạn còn lại 
-//cũng phủ được tất cả giá trị từ L đến R và đoạn loại bỏ có độ dài lớn nhất.
-
 #include <iostream>
-#include <fstream>
-#include<tuple> 
-#include <vector>
+#include <cmath>
+#include "stdio.h"
+#include "stdlib.h"
+#include "time.h"
+
 using namespace std;
-typedef vector<tuple<int,int> > tuple_list;
 
-// Tìm đoạn có độ dài dài nhất trong list
-// Giải thích condition:
-// condition là 1 mảng điều kiện sao cho tại condition[i]=true thì ta sẽ không xét đoạn thứ i
-int findMaxLength(tuple_list list,bool* condition1=NULL, bool* condition2=NULL)
-{
-    int maxLength=0,length;
+const int MAXV=1e6+60;
+const int MAXN=1e3+30;
+int c[MAXV], d[MAXV], e[MAXV];
+int n, l, r;
+int L[MAXN], R[MAXN];
 
-    if(!condition1 && !condition2)
-    { 
-        for (int k=0;k<list.size();k++){
-            length= get<1>(list.at(k)) - get<0>(list.at(k));
-            if (length>maxLength)
-                maxLength=length;
+int solution(){
+    int ans=0;
+    for(int i=0;i<n;i++){
+        if(e[R[i]]<l || R[i]<l || L[i]>r || e[R[i]]<L[i]){
+            ans=max(ans, R[i]-L[i]);
         }
     }
-    else if (!condition2)
-    {    
-        for (int k=0;k<list.size() & condition1[k]==false ;k++){
-            length= get<1>(list.at(k)) - get<0>(list.at(k));
-            if (length>maxLength)
-                maxLength=length;
-        }
-    }
-    else 
-    {     
-        for (int k=0;k<list.size() ,condition1[k]==0 , condition2[k]==0;k++){
-            cout << "k = " << k <<endl;
-            length= get<1>(list.at(k)) - get<0>(list.at(k));
-            if (length>maxLength){
-                maxLength=length;
-            }
-        }
-    }
-    return maxLength;
-
+    return ans;
 }
 
+void input(){
+    cin>>n>>l>>r;
+    for(int i=0;i<n;i++){
+        int x, y;
+        cin>>x>>y;
+        L[i]=x;
+        R[i]=y;
+        c[x]++;
+        c[y+1]--;
+    }
+    c[0]=d[0];
+    for(int i=1;i<MAXV;i++){
+        d[i]=d[i-1]+c[i];
+    }
+    for(int i=0;i<MAXV;i++){
+        if(d[i]==1){
+            if(i>r) e[i]=e[i-1];
+            else e[i]=i;
+        }
+        else e[i]=e[i-1];
+    }
+}
 
 int main()
 {
-    // Read input file
-    ifstream filein("input.txt");
-    if(!filein){
-        cerr << "Error: cannot open this file.";
-        return -1;
-    }
-    int n, L, R;
-    tuple_list list;
-    filein >> n >> L >> R;
-    for (int i=0;i<n;i++){
-        int a,b;
-        filein >> a>> b;
-        list.push_back(tuple<int, int>(a,b) );
-    }
-
-    bool contain_L[n]={false};
-    bool contain_R[n]={false};
-    int count_L=0;
-    int count_R=0;
-
-    // Create contain_L and contain_R array
-    for (int i=0;i<n;i++){
-        if (get<0>(list.at(i)) <= L && L<= get<1>(list.at(i) ) )  {
-            contain_L[i]=true;
-            count_L++;
-        }
-        if (   get<0>(list.at(i)) <= R && R<= get<1>(list.at(i)) ){
-            contain_R[i]=true;
-            count_R++;
-        }
-    }
-
-    // Check result of count_L and count_R to find ( , )
-    int result=0; // length of ( , )
-    if (count_R==1 && count_L==1){
-        // 
-            result=findMaxLength(list,contain_L,contain_R);
-    } 
-    else if (count_R>1 && count_L>1){
-        result=findMaxLength(list);
-    }
-    else{
-        if (count_R==1 and count_L >1){
-            result=findMaxLength(list,contain_R);
-        }
-        else{
-            result=findMaxLength(list,contain_L);
-        }
-    }
-
-    // Write result to output file
-    ofstream fileout("output.txt");
-    fileout << result;
-
+    freopen("input6_1.txt", "r", stdin);
+    input();
+    int ans=solution();
+    cout<<ans<<"\n";
     return 0;
 }
