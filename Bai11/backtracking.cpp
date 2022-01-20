@@ -16,15 +16,19 @@ void divide_cluster(vpii chosen_data, vb &check, int i)
     if (i == n)
     {
         int total = 0;
+
         for (int j = 0; j < m + n; ++j)
             total += (check[j] ? chosen_data[j].first : chosen_data[j].second);
+
         ans = max(ans, total);
         return;
     }
+
     for (int j = 0; j < m + n; ++j)
         if (!check[j])
         {
             check[j] = true;
+            // continue to divide the cluster from i + 1
             divide_cluster(chosen_data, check, i + 1);
             check[j] = false;
         }
@@ -44,6 +48,7 @@ void backtracking(vb &visited, vpii &chosen_data, int i)
         {
             visited[j] = true;
             chosen_data.push_back(data[j]);
+            // continue backtracking from i + 1
             backtracking(visited, chosen_data, i + 1);
             chosen_data.pop_back();
             visited[j] = false;
@@ -65,6 +70,7 @@ int main()
         return 0;
     }
 
+    // read data
     file >> k >> n >> m;
     for (int i = 0; i < k; ++i)
         file >> data[i].first >> data[i].second;
@@ -72,6 +78,8 @@ int main()
     ans = 0;
     vb visited(k, false);
     vpii chosen_data;
+
+    // backtracking to find maximun result
     backtracking(visited, chosen_data, 0);
 
     cout << "\nResult:\n";
