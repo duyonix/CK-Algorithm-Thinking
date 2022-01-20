@@ -20,7 +20,8 @@ class point {
         int getId() { return id; }
         long long getX() { return x; }
         long long getY() { return y; }
-        static bool compareSlope(point A, point B)
+        static bool compareSlope(point A, point B) //xếp theo góc hợp bởi phương ngang 
+                                                    //Nếu AOx < BOx thì A đứng trước
         {
             double slope_a, slope_b;
             if (A.getX() == point::O.getX())
@@ -48,12 +49,15 @@ class point {
         }
 };
 
-
+// <0 => a nằm bên trái so với bờ bc
+// >0 => nằm bên phải
+// =0 =>fail vì đề yêu cầu ko có 3 điểm nào thẳng hàng
 long long location(point a, point b, point c) {
     return (b.getX() - a.getX()) * (b.getY() + a.getY()) + (c.getX() - b.getX()) * (c.getY() + b.getY()) + (a.getX() - c.getX()) * (a.getY() + c.getY());
 }
 
 // O(n^3)
+// xét k nằm phía nào so với bờ ij
 pair<int, int> naive(vector<point> a, int n) {
     for (int i = 0; i < n; i++) {
         for (int j = i + 1; j < n; j++) {
@@ -79,49 +83,53 @@ pair<int, int> naive(vector<point> a, int n) {
     return make_pair(-1, -1);
 }
 //O(n^2)
+//sort 
+//điểm chính giữa là i
+//sau đó xét từ nửa tập sau i là j=i+1
+//rồi xét k nằm phía nào so với bờ ij
 pair<int, int> better(vector<point> a,int n) {
     sort(a.begin(), a.end());
     int i = n / 2 - 1;
     for (int j = i + 1; j < n; j++) {
-        int left_side = 0;
-        int right_side = 0;
+        int leftSide = 0;
+        int rightSide = 0;
         for (int k = 0; k < n; k++) {
             if (k == i || k == j) {
                 continue;
             }
             if (location(a[k], a[i], a[j]) > 0) {
-                left_side += 1;
+                leftSide += 1;
             }
             else {
-                right_side += 1;
+                rightSide += 1;
             }
         }
 
-        if (left_side == right_side) {
+        if (leftSide == rightSide) {
             return make_pair(a[i].getId() + 1, a[j].getId() + 1);
         }
     }
     return make_pair(-1, -1);
 }
-point point::O = point(0, 0, -1);
+point point::O = point(-1,0, 0);
 //O(n)
 pair<int, int> best(vector<point> a, int n) {
-    int x, y, pos_O;
-    int min_x = INT_MAX;
-    for (int i = 1; i <= n; ++i)
+    int pos_O;
+    long long x, y, min_x = LONG_MAX;
+    for (int i =0; i <n; ++i)
     {
-        cin >> x >> y;
-        a.push_back(point(x, y, i));
+        x = a[i].getX();
 
-        // tim O co hoanh do x nho nhat
+        // Tìm điểm có hoành độ nhỏ nhất, nếu bằng thì lấy điểm hoành độ nhỏ nhất đầu tiên
+        // Phải chọn điểm có hoành độ min vì khi xét góc hợp với phương ngang thì mỗi góc đều < 180 độ
         if (x < min_x)
         {
             min_x = x;
-            pos_O = i - 1;
+            pos_O = i;
         }
     }
 
-    // loai diem tree_O ra khoi mang, va tree_O tro thanh goc
+    // Loại gốc ra khỏi mảng
     point tree_O = a[pos_O];
     if (pos_O != n - 1)
     {
@@ -130,12 +138,12 @@ pair<int, int> best(vector<point> a, int n) {
     a.pop_back();
     point::O = tree_O;
 
-    // sap xep mang theo do doc cua tree_O
+    //Sắp xếp mảng theo góc hợp phương ngang , tưởng tượng sort các điểm theo vòng kim đồng hồ
     sort(a.begin(), a.end(), point::compareSlope);
 
-    // diem trung vi tree_O2
+    //Điểm chính giữa là kết quả
     point tree_O2 = a[a.size() / 2];
-    return make_pair(pos_O, tree_O2.getId());
+    return make_pair(tree_O.getId(), tree_O2.getId());
 }
 
 int main() {
@@ -154,9 +162,9 @@ int main() {
         }
 
         //pair<int, int> ans = naive();
-        pair<int, int> ans = better(a,n);
-        //pair<int, int> ans = best(a, n);
-        cout << ans.first+1 << " " << ans.second +1 << "\n";
+        //pair<int, int> ans = better(a,n);
+        pair<int, int> ans = best(a, n);
+        cout << ans.first+1 << " " << ans.second+1  << "\n";
     }
     return 0;
 }

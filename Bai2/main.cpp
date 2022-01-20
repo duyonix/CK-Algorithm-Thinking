@@ -4,7 +4,7 @@
 
 #define MAX 1e3
 #define ll long long
-#define pii pair<int, int>
+#define pii pair<int,int>
 
 using namespace std;
 vector<int> primeNumbers;
@@ -35,6 +35,7 @@ ll g(int n){
     }else{
         ll res = 0;
         for(int i=0; i< n; ++i){
+            // Find prime from arr[i+1] to n
             for(int j=i; j<n; ++j){
                 if(primeNumbers[i] + primeNumbers[j]==2*n){
                     // printf("[%d,%d] ",primeNumbers[i], primeNumbers[j]);
