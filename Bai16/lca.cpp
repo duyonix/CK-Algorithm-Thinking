@@ -1,3 +1,4 @@
+#pragma warning(disable : 4996)
 #include <iostream>
 #include <vector>
 #include <queue>
@@ -46,16 +47,29 @@ Node *LCA(Node *root, int n1, int n2)
     return right;
 }
 
+// ma trận truy hồi cho hàm findLevel
+// level[u][v] có nghĩa là trong 1 cây có root là u thì node v có level là level[u][v]
+int **levels;
+
 /* Hàm tìm level của 1 node
  * Ý tưởng: mỗi lần đệ quy đi xuống dưới 2 cây con 1 lần, thì level tăng lên 1
  * khi tìm thấy node k thì level hiện tại sẽ là level của node k
+ *
+ * áp dụng quy hoạch động lưu lại những level đã tìm được
  */
 int findLevel(Node *root, int k, int level)
 {
     if (root == NULL)
         return -1;
+
     if (root->key == k)
+    {
+        levels[root->key][k] = level;
         return level;
+    }
+
+    if (levels[root->key][k] != -1)
+        return levels[root->key][k];
 
     int left = findLevel(root->left, k, level + 1);
     if (left == -1)
@@ -112,6 +126,15 @@ Node *buildTreeFromAdjList(vector<vector<int>> adjList)
     return root;
 }
 
+void freeTree(Node *root)
+{
+    if (root == nullptr)
+        return;
+    freeTree(root->left);
+    freeTree(root->right);
+    delete root;
+}
+
 int main()
 {
     freopen("input.inp", "r", stdin);
@@ -126,6 +149,14 @@ int main()
         adjList.push_back({a, b});
     Node *root = buildTreeFromAdjList(adjList);
 
+    levels = new int *[n + 1];
+    for (int i = 1; i <= n; i++)
+    {
+        levels[i] = new int[n + 1];
+        for (int j = 1; j <= n; j++)
+            levels[i][j] = -1;
+    }
+
     int treeWidth = 0;
     for (int i = 1; i <= n; i++)
     {
@@ -134,6 +165,13 @@ int main()
     }
 
     cout << treeWidth;
+
+    // free levels
+    for (int i = 1; i <= n; i++)
+        delete[] levels[i];
+    delete[] levels;
+
+    freeTree(root);
 
     return 0;
 }
