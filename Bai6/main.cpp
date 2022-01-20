@@ -22,7 +22,7 @@ int solution()
         int right = R[i];
         if (left > r || right < l || e[min(right, r)] - e[max(left, l) - 1] == min(right, r) - max(left, l) + 1)
         {
-            cout << "Can remove: " << left << " " << right << "\n";
+            // cout << "Can remove: " << left << " " << right << "\n";
             ans = max(ans, right - left);
         }
     }

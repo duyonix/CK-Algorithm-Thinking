@@ -12,37 +12,46 @@ using namespace std;
 #define ll long long
 #define pii pair<int, int>
 
-pii add(pii p, int i, int j){
+pii add(pii p, int i, int j)
+{
     pii r;
     r.first = p.first + i;
     r.second = p.second + j;
     return r;
 }
 
-void printSquare(int i, int j){
+void printSquare(int i, int j)
+{
     int _min = min(i, j);
-    j += i; i = _min; j -= _min; // i < j
+    j += i;
+    i = _min;
+    j -= _min; // i < j
     vector<pii> p(4);
-    pii o = {0,0};
-    o.first = -(i+j)/2;
-    o.second = -(i+j)/2;
+    pii o = {0, 0};
+    o.first = -(i + j) / 2;
+    o.second = -(i + j) / 2;
     p[0] = add(o, i, j);
     p[1] = add(p[0], i, j);
-    p[2] = add(p[1], j, -1*i);
-    p[3] = add(p[2], -1*i, -1*j);
-    for(pii _p: p){
-        cout<<_p.first<<" "<<_p.second<<endl;
+    p[2] = add(p[1], j, -1 * i);
+    p[3] = add(p[2], -1 * i, -1 * j);
+    for (pii _p : p)
+    {
+        cout << _p.first << " " << _p.second << endl;
     }
 }
 
-// Fermat Theorem: 
+// Fermat Theorem:
 // O(sqrt(n)log(n))
-bool checkByFermatTheorem(int s){
-    for (int i = 2; i * i <= s; i++) {
+bool checkByFermatTheorem(int s)
+{
+    for (int i = 2; i * i <= s; i++)
+    {
         int count = 0;
-        if (s % i == 0) {
+        if (s % i == 0)
+        {
             // Count all the prime factors.
-            while (s % i == 0) {
+            while (s % i == 0)
+            {
                 count++;
                 s /= i;
             }
@@ -50,12 +59,13 @@ bool checkByFermatTheorem(int s){
             if (i % 4 == 3 && count % 2 != 0)
                 return 0;
         }
-    }    
+    }
     // If s itself is a x prime number and can be expressed in the form of 4k + 3 we return false.
-    return s % 4 != 3;  
+    return s % 4 != 3;
 }
 
-void solution(){
+void solution()
+{
     int s;
     cin >> s;
 
@@ -71,20 +81,23 @@ void solution(){
 
     // O(sqrt(n))
     unordered_map<int, int> set;
-    for (int i = 0; i * i <= s; ++i) {
- 
+    for (int i = 0; i * i <= s; ++i)
+    {
+
         // store square value in hashmap
         set[i * i] = 1;
-        if (set.find(s - i * i) != set.end()) {
+        if (set.find(s - i * i) != set.end())
+        {
             printSquare(sqrt(s - i * i), i);
             return;
         }
     }
     // --------------
-    cout<<"Impossible";
+    cout << "Impossible";
 }
 
-int main(){
+int main()
+{
     ios_base::sync_with_stdio(false);
     cin.tie(NULL);
     solution();
