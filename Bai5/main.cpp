@@ -32,7 +32,7 @@ void readData(int &n, int &m, int &k, int **graph, map<int, int> q)
     for (size_t i = 0; i < m; i++)
     {
         f >> u >> v;
-        graph[u][v] += 1;
+        graph[u - 1][v - 1] += 1;
     }
     f >> nQue;
     for (size_t i = 0; i < nQue; i++)
@@ -66,12 +66,12 @@ void multiply(int **a, int **b, int n)
 }
 void printMatrix(int **a, int n)
 {
-    for (int i = 1; i <= n; i++)
+    for (int i = 0; i <= n - 1; i++)
     {
-        for (int j = 1; j <= n; j++)
+        for (int j = 0; j <= n - 1; j++)
         {
 
-            cout << "    " << a[i][j];
+            cout << a[i][j] << "    ";
         }
 
         cout << endl;
