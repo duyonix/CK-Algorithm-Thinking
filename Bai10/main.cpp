@@ -23,6 +23,7 @@ bool compare(Segment x, Segment y)
 
 struct compare_pii
 {
+
     bool operator()(pii const &x, pii const &y)
     {
         return (x.first > y.first) || (x.first == y.first && x.second > y.second);
@@ -43,10 +44,12 @@ int main()
         return 0;
     }
 
+    // read data
     int n, max_layer = 0;
     file >> n;
     vector<Segment> segments(n);
 
+    // set 1 for a and -1 for b + 1 in each segment
     for (int i = 0; i < n; ++i)
     {
         segments[i].id = i;
@@ -57,6 +60,7 @@ int main()
 
     file.close();
 
+    // calculate max_layer
     for (int i = 1; i < MAX; ++i)
     {
         color_layer[i] += color_layer[i - 1];
@@ -75,6 +79,7 @@ int main()
 
     for (int i = 0; i < n; ++i)
     {
+        // pop PQ and set the color for the segment and then push new value for PQ
         pii end_point = pq.top();
         pq.pop();
         color_code[segments[i].id] = end_point.second;
