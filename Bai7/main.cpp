@@ -40,6 +40,7 @@ int lcsRecursion(int m, int n)
 
 int lcsDP()
 {
+    // a[i] b[j]  ~ dp[i+1][j+1]
     int dp[n + 1][n + 1];
 
     for (int i = 0; i <= n; i++)
