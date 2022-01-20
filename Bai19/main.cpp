@@ -1,7 +1,7 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-const long long MAXN = 11;
+const long long MAXN = 1e8;
 const long long MAXX = 1e9;
 
 int n;
