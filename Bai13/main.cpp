@@ -91,21 +91,21 @@ pair<int, int> better(vector<point> a,int n) {
     sort(a.begin(), a.end());
     int i = n / 2 - 1;
     for (int j = i + 1; j < n; j++) {
-        int left_side = 0;
-        int right_side = 0;
+        int leftSide = 0;
+        int rightSide = 0;
         for (int k = 0; k < n; k++) {
             if (k == i || k == j) {
                 continue;
             }
             if (location(a[k], a[i], a[j]) > 0) {
-                left_side += 1;
+                leftSide += 1;
             }
             else {
-                right_side += 1;
+                rightSide += 1;
             }
         }
 
-        if (left_side == right_side) {
+        if (leftSide == rightSide) {
             return make_pair(a[i].getId() + 1, a[j].getId() + 1);
         }
     }
