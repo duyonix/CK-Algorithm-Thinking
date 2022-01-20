@@ -1,3 +1,4 @@
+
 #include <iostream>
 #include <cmath>
 #include "stdio.h"
@@ -17,9 +18,12 @@ int solution()
     int ans = 0;
     for (int i = 0; i < n; i++)
     {
-        if (e[R[i]] < l || R[i] < l || L[i] > r || e[R[i]] < L[i])
+        int left = L[i];
+        int right = R[i];
+        if (left > r || right < l || e[min(right, r)] - e[max(left, l) - 1] == min(right, r) - max(left, l) + 1)
         {
-            ans = max(ans, R[i] - L[i]);
+            cout << "Can remove: " << left << " " << right << "\n";
+            ans = max(ans, right - left);
         }
     }
     return ans;
@@ -42,17 +46,19 @@ void input()
     {
         d[i] = d[i - 1] + c[i];
     }
-    for (int i = 0; i < MAXV; i++)
+    e[0] = 0;
+    for (int i = 1; i < MAXV; i++)
     {
         if (d[i] == 1)
         {
-            if (i > r)
-                e[i] = e[i - 1];
-            else
-                e[i] = i;
+            e[i] = 0;
         }
         else
-            e[i] = e[i - 1];
+            e[i] = 1;
+    }
+    for (int i = 1; i < MAXV; i++)
+    {
+        e[i] = e[i - 1] + e[i];
     }
 }
 
