@@ -6,7 +6,7 @@ const int N = 1000;
 
 int n, s, a[N] = {};
 
-// Ý tưởng: duyệt tất cả các cặp i, j (0 <= i < j < n) thỏa a[i] + a[j] <= fm
+// Ý tưởng: duyệt tất cả các cặp i, j (0 <= i < j < n) thỏa a[i] + a[j] <= m
 int FM_getall(int a[], int n, int s)
 {
     int result = 0;
@@ -20,7 +20,7 @@ int FM_getall(int a[], int n, int s)
     return result;
 }
 
-// Ý tưởng: sắp xếp mảng đầu vào, khi đó nếu 2 số r, l (0 <= l < r < n) thỏa a[l] + a[r] <= fm (*)
+// Ý tưởng: sắp xếp mảng đầu vào, khi đó nếu 2 số r, l (0 <= l < r < n) thỏa a[l] + a[r] <= m (*)
 // thì sẽ có r-l cặp số thảo yêu cầu (các cắp này là <l, l+1>, <l, l+2>,..., <l, r>), tăng l lên 1
 // nếu không thỏa (*) thì giảm r đi 1. Lắp lại tới khi l >= r.
 int FM_2pointer(int a[], int n, int s)
