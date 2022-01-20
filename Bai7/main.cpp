@@ -57,6 +57,7 @@ int lcsDP()
     }
     return dp[n][n];
 }
+
 int main()
 {
     readData();
