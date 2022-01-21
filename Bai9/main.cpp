@@ -32,8 +32,6 @@ long long calculateF(int a, int b)
         f[a][b] = 0;
         return 0;
     }
-    if (a < 3)
-        return 1;
     if (a == 3)
     {
         long long ans = 0;
@@ -92,13 +90,10 @@ int main()
     setup();
     input();
     long long ans = 0;
-    for (int i = 100; i < 1000; i++)
+    for (int i = 10; i < 100; i++)
     {
-        if (erathones[i] == 1)
-        {
-            long long tmp = calculateF(n - 1, i % 100);
-            ans = (ans + tmp) % MOD;
-        }
+        long long tmp = calculateF(n, i);
+        ans = (ans + tmp) % MOD;
     }
     cout << ans << "\n";
     return 0;
