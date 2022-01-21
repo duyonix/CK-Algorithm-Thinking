@@ -30,7 +30,7 @@ double areaOfIntersection(int &x1, int &y1, int &x2, int &y2, int &R, int sqrDis
         // Góc chắn cung giao giữa 2 đường tròn. VD CAD
         double Alpha = 2 * acos(cosHalfAlpha);
 
-        return Alpha * R * R - R * sin(Alpha);
+        return Alpha * R * R - R * R * sin(Alpha);
     }
 }
 double areaOfUnion(int &x1, int &y1, int &x2, int &y2, int &R)
