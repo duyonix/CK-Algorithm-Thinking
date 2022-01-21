@@ -32,6 +32,8 @@ long long calculateF(int a, int b)
         f[a][b] = 0;
         return 0;
     }
+    if (a < 3)
+        return 1;
     if (a == 3)
     {
         long long ans = 0;
