@@ -1,13 +1,7 @@
-#include <iostream>
-#include <fstream>
-#include <math.h>
-#include <iomanip>
-#include <map>
-#include <iterator>
-
+#include <bits/stdc++.h>
 using namespace std;
 int n, m, k;
-const long long base = round(1e9) + 7;
+const long long base = 1e9 + 7;
 struct matran
 {
     int a[55][55];
@@ -51,24 +45,23 @@ matran mu(matran a, long long k)
 }
 int main()
 {
-    ifstream f;
-    f.open("input.txt");
-
-    f >> n >> m >> k;
+    freopen("input.txt", "r", stdin);
+    freopen("output.out", "w", stdout);
+    cin >> n >> m >> k;
     matran coban;
     for (int i = 1; i <= m; ++i)
     {
         int u, v;
-        f >> u >> v;
+        cin >> u >> v;
         coban.a[u][v]++;
     }
     matran res = mu(coban, k);
     int q;
-    f >> q;
+    cin >> q;
     for (int i = 1; i <= q; ++i)
     {
         int u, v;
-        f >> u >> v;
+        cin >> u >> v;
         cout << res.a[u][v] << "\n";
     }
 }
